@@ -11,7 +11,7 @@ class PageViewNavigation extends StatefulWidget {
 
 class _PageViewNavigationState extends State<PageViewNavigation> {
   final pageController = PageController();
-
+  final pageViewNavigationController = PageViewNavigationController();
   @override
   void dispose() {
     pageController.dispose();
@@ -20,8 +20,6 @@ class _PageViewNavigationState extends State<PageViewNavigation> {
 
   @override
   Widget build(BuildContext context) {
-    final pageViewNavigationController =
-        Provider.of<PageViewNavigationController>(context, listen: false);
     return Scaffold(
       extendBody: true,
       body: PageView(

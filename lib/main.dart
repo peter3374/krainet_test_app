@@ -2,9 +2,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:krainet_test_app/data/datasource/remote/auth_data_source_impl.dart';
+import 'package:krainet_test_app/data/repository/auth_repository_impl.dart';
 import 'package:krainet_test_app/presentation/screens/auth_screens/sign_up_screen/controller/sign_up_controller.dart';
 import 'package:krainet_test_app/presentation/screens/initial_screen/controller/initial_screen_controller.dart';
 import 'package:krainet_test_app/presentation/screens/menu_screens/page_view_navigation/controller/page_view_navigation_controller.dart';
+import 'package:krainet_test_app/presentation/screens/menu_screens/profile_screen/controller/profile_controller.dart';
 import 'package:krainet_test_app/presentation/services/injection.dart';
 import 'package:krainet_test_app/presentation/services/navigation_service.dart';
 import 'package:provider/provider.dart';
@@ -39,8 +42,14 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(
           create: (context) => SignUpController(),
         ),
-        Provider(
-          create: (context) => PageViewNavigationController(),
+        ChangeNotifierProvider(
+          create: (context) => ProfileController(
+            authRepository: AuthRepositoryImpl(
+              authDataSource: AuthDataSourceImpl(
+                firebaseAuth: FirebaseAuth.instance,
+              ),
+            ),
+          ),
         ),
       ],
       child: MaterialApp(
