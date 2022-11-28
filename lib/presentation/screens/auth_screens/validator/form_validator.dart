@@ -18,5 +18,5 @@ class FormValidator {
   }
 
   String? validatePassword({required String password}) =>
-      _isEmptyTextField(text: password) ? 'Пароль не может быть пустым' : null;
+      password.length < 6 ? 'Не менее 6 символов ' : null;
 }

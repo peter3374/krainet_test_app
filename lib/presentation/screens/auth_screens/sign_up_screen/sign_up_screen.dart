@@ -1,15 +1,8 @@
-import 'dart:developer';
-
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:krainet_test_app/data/datasource/remote/auth_data_source_impl.dart';
-import 'package:krainet_test_app/data/datasource/remote/auth_datasource.dart';
-import 'package:krainet_test_app/data/repository/auth_repository_impl.dart';
 import 'package:krainet_test_app/presentation/common_widgets/unfocus_widget.dart';
 import 'package:krainet_test_app/presentation/constants/auth_pages_padding.dart';
 import 'package:krainet_test_app/presentation/screens/auth_screens/sign_up_screen/controller/sign_up_controller.dart';
-import 'package:krainet_test_app/presentation/screens/auth_screens/validator/form_validator.dart';
 import 'package:krainet_test_app/presentation/screens/auth_screens/widgets/text_field_wrapper.dart';
 import 'package:krainet_test_app/presentation/services/navigation_service.dart';
 import 'package:provider/provider.dart';
@@ -45,12 +38,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
         title: const Text('Регистрация'),
       ),
       body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(paddingAll),
-          child: UnfocusWidget(
-            child: Form(
-              autovalidateMode: AutovalidateMode.onUserInteraction,
-              // key: context.read<SignUpController>().formKey,
+        child: UnfocusWidget(
+          child: Form(
+            key: signUpController.formKey,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            child: Padding(
+              padding: const EdgeInsets.all(paddingAll),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -61,6 +54,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       validator: (value) => signUpController.formValidator
                           .validateEmail(email: value ?? ''),
                       decoration: const InputDecoration(hintText: 'Почта:'),
+                      onChanged: (text) => signUpController.changeIsFilledValue(
+                        isFilledValue: signUpController.isFilledEmail,
+                        text: text,
+                      ),
                     ),
                   ),
                   Row(
@@ -69,12 +66,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       TextFieldWrapper(
                         width: 250,
                         child: TextFormField(
+                          onChanged: (text) =>
+                              signUpController.changeIsFilledValue(
+                            isFilledValue: signUpController.isFilledPassword1,
+                            text: text,
+                          ),
                           obscureText: signUpController.isPassword1FieldObscure,
                           controller: _password1TextController,
                           validator: (value) => signUpController.formValidator
                               .validatePassword(password: value ?? ''),
-                          decoration:
-                              const InputDecoration(hintText: 'Пароль:'),
+                          decoration: const InputDecoration(
+                            hintText: 'Пароль:',
+                          ),
                         ),
                       ),
                       IconButton(
@@ -94,6 +97,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       TextFieldWrapper(
                         width: 250,
                         child: TextFormField(
+                          onChanged: (text) =>
+                              signUpController.changeIsFilledValue(
+                            isFilledValue: signUpController.isFilledPassword2,
+                            text: text,
+                          ),
                           obscureText: signUpController.isPassword2FieldObscure,
                           controller: _password2TextController,
                           validator: (value) => signUpController.formValidator
@@ -135,7 +143,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                   ElevatedButton(
                     onPressed: () async =>
-                        await signUpController.pickDate(context),
+                        await signUpController.pickBirthdayDate(context),
                     child: Text(
                       signUpController.pickedDate == null
                           ? 'Выбрать дату'
@@ -144,23 +152,27 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                   ),
                   ElevatedButton(
-                    onPressed: signUpController.isSignUpFieldIsFilled(
+                    onPressed: signUpController.isFilledAllTextFields(
                       email: _emailTextController.text,
                       password1: _password1TextController.text,
                       password2: _password2TextController.text,
                     )
-                        ? () async => await signUpController.trySignUp(
-                              context: context,
-                              email: _emailTextController.text,
-                              password1: _password1TextController.text,
-                              password2: _password2TextController.text,
-                            )
+                        ? signUpController.isActiveSignUpButton
+                            ? () async => await signUpController.trySignUp(
+                                  context: context,
+                                  email: _emailTextController.text,
+                                  password1: _password1TextController.text,
+                                  password2: _password2TextController.text,
+                                )
+                            : null
                         : null,
                     child: const Text('Регистрация'),
                   ),
                   ElevatedButton(
                     onPressed: () async => await NavigationService.navigateTo(
-                        context, Pages.signInReplacement),
+                      context,
+                      Pages.signInReplacement,
+                    ),
                     child: const Text('Вход'),
                   ),
                 ],

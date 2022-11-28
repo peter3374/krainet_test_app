@@ -1,6 +1,8 @@
 import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:krainet_test_app/core/user_credentials_scheme.dart';
 import 'package:krainet_test_app/data/datasource/remote/auth_data_source_impl.dart';
 import 'package:krainet_test_app/data/repository/auth_repository_impl.dart';
 import 'package:krainet_test_app/presentation/screens/auth_screens/controller/auth_controller.dart';
@@ -12,11 +14,16 @@ import 'package:url_launcher/url_launcher.dart';
 
 class SignUpController extends AuthController with ChangeNotifier {
   final formKey = GlobalKey<FormState>();
+
   DateTime? pickedDate;
   bool isActiveSignUpButton = true;
   bool isPassword1FieldObscure = true;
   bool isPassword2FieldObscure = true;
   bool isPrivacyPolicyAgree = false;
+
+  bool isFilledEmail = false;
+  bool isFilledPassword1 = false;
+  bool isFilledPassword2 = false;
 
   SignUpController()
       : super(
@@ -26,6 +33,23 @@ class SignUpController extends AuthController with ChangeNotifier {
                 AuthDataSourceImpl(firebaseAuth: FirebaseAuth.instance),
           ),
         );
+
+  void changeIsFilledValue({
+    required String text,
+    required bool isFilledValue,
+  }) {
+    text.isNotEmpty == true ? isFilledValue = true : isFilledValue = true;
+    notifyListeners();
+  }
+
+  bool isFilledAllTextFields({
+    required String email,
+    required String password1,
+    required String password2,
+  }) =>
+      (email.isNotEmpty && password1.isNotEmpty && password2.isNotEmpty) == true
+          ? true
+          : false;
 
   void changePrivacyPolicyValue(bool? newValue) {
     if (newValue != null) {
@@ -44,7 +68,7 @@ class SignUpController extends AuthController with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> pickDate(BuildContext context) async {
+  Future<void> pickBirthdayDate(BuildContext context) async {
     final now = DateTime.now();
     pickedDate = await showDatePicker(
       context: context,
@@ -58,30 +82,26 @@ class SignUpController extends AuthController with ChangeNotifier {
 
   Future<void> openPrivacyPoliticsLink() async => await launchUrl(
         Uri.parse('https://flutter.dev'),
-        mode: LaunchMode.externalApplication,
       );
 
-  bool isSignUpFieldIsFilled({
+  bool isSignUpFieldsFilled({
     required String email,
     required String password1,
     required String password2,
-  }) {
-    if (email.isNotEmpty && password1.isNotEmpty && password2.isNotEmpty) {
-      return true;
-    } else {
-      return false;
-    }
-  }
+  }) =>
+      email.isNotEmpty && password1.isNotEmpty && password2.isNotEmpty
+          ? true
+          : false;
 
   bool _isValidPassword({
     required String password1,
     required String password2,
     required BuildContext context,
   }) {
-    if (password1.isEmpty && password2.isEmpty) {
+    if (password1.length < 6 || password2.length < 6) {
       MessageService.displaySnackbar(
         context: context,
-        message: 'Пароли не могут быть пустыми',
+        message: 'Пароль должен быть >= 6 символов ',
       );
       return false;
     } else {
@@ -103,7 +123,7 @@ class SignUpController extends AuthController with ChangeNotifier {
     } else {
       MessageService.displaySnackbar(
         context: context,
-        message: 'Пароли не совпадают',
+        message: 'Соглашение не принято',
       );
       return false;
     }
@@ -115,14 +135,22 @@ class SignUpController extends AuthController with ChangeNotifier {
     } else {
       MessageService.displaySnackbar(
         context: context,
-        message: 'Пароли не совпадают',
+        message: 'Выбери дату',
       );
       return false;
     }
   }
 
   Future<void> _saveUserCredentials(User firebaseUser) async {
-    final _sharedPreferences = await SharedPreferences.getInstance();
+    final sharedPreferences = await SharedPreferences.getInstance();
+    await sharedPreferences.setString(
+      UserCredentialsScheme.email,
+      firebaseUser.email!,
+    );
+    await sharedPreferences.setString(
+      UserCredentialsScheme.birthdayDate,
+      DateFormat('yyyy-MM-dd').format(pickedDate!),
+    );
   }
 
   Future<void> _signUp({
@@ -130,13 +158,16 @@ class SignUpController extends AuthController with ChangeNotifier {
     required String password,
     required BuildContext context,
   }) async {
-    final user = await authRepository.signUp(
-      email: email,
-      password: password,
-    );
-    if (user.user != null) {
-      await _saveUserCredentials(user.user!);
-    } else {
+    try {
+      final user = await authRepository.signUp(
+        email: email,
+        password: password,
+      );
+      if (user.user != null) {
+        await _saveUserCredentials(user.user!);
+      }
+    } catch (e) {
+      log(e.toString());
       throw MessageService.displaySnackbar(
         context: context,
         message: 'Ошибка регистрации',
@@ -160,10 +191,6 @@ class SignUpController extends AuthController with ChangeNotifier {
         formKey.currentState!.validate()) {
       return true;
     } else {
-      MessageService.displaySnackbar(
-        context: context,
-        message: 'Неверная форма',
-      );
       return false;
     }
   }
@@ -174,24 +201,26 @@ class SignUpController extends AuthController with ChangeNotifier {
     required String password2,
     required BuildContext context,
   }) async {
-    isActiveSignUpButton = false;
-    notifyListeners();
-    if (isValidForm(
-      email: email,
-      password1: password1,
-      password2: password2,
-      context: context,
-    )) {
-      log('is Valid');
-
-      await _signUp(
+    try {
+      isActiveSignUpButton = false;
+      notifyListeners();
+      if (isValidForm(
         email: email,
-        password: password1,
+        password1: password1,
+        password2: password2,
         context: context,
-      ).then((_) => NavigationService.navigateTo(context, Pages.menu));
-    }
+      )) {
+        log('is Valid');
 
-    isActiveSignUpButton = true;
-    notifyListeners();
+        await _signUp(
+          email: email,
+          password: password1,
+          context: context,
+        ).then((_) => NavigationService.navigateTo(context, Pages.menu));
+      }
+    } finally {
+      isActiveSignUpButton = true;
+      notifyListeners();
+    }
   }
 }
