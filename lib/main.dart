@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:krainet_test_app/presentation/screens/auth_screens/sign_up_screen/controller/sign_up_controller.dart';
 import 'package:krainet_test_app/presentation/screens/initial_screen/controller/initial_screen_controller.dart';
+import 'package:krainet_test_app/presentation/screens/menu_screens/page_view_navigation/page_view_navigation_controller.dart';
 import 'package:krainet_test_app/presentation/services/injection.dart';
 import 'package:krainet_test_app/presentation/services/navigation_service.dart';
 import 'package:provider/provider.dart';
@@ -37,6 +38,9 @@ class _MyAppState extends State<MyApp> {
         ),
         ChangeNotifierProvider(
           create: (context) => SignUpController(),
+        ),
+        Provider(
+          create: (context) => PageViewNavigationController(),
         ),
       ],
       child: MaterialApp(

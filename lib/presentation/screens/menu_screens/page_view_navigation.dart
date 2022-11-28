@@ -1,29 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:krainet_test_app/presentation/screens/menu_screens/main_screen/main_screen.dart';
-import 'package:krainet_test_app/presentation/screens/menu_screens/profile_screen/profile_screen.dart';
+import 'package:krainet_test_app/presentation/screens/menu_screens/page_view_navigation/page_view_navigation_controller.dart';
+import 'package:provider/provider.dart';
 
-class MenuScreen extends StatelessWidget {
-  MenuScreen({super.key});
-
-  int _seletedItem = 0; // page index
-  final _pages = [
-    const MainScreen(),
-    const ProfileScreen(),
-  ];
-  final _pageController = PageController();
+class PageViewNavigation extends StatefulWidget {
+  const PageViewNavigation({super.key});
 
   @override
+  State<PageViewNavigation> createState() => _PageViewNavigationState();
+}
+
+class _PageViewNavigationState extends State<PageViewNavigation> {
+  final pageController = PageController();
+  @override
   Widget build(BuildContext context) {
+    final pageViewNavigationController =
+        Provider.of<PageViewNavigationController>(context, listen: false);
     return Scaffold(
-      extendBody: true, // if false - white background behind nav bar
+      extendBody: true,
       body: PageView(
-        physics: const BouncingScrollPhysics(),
-        onPageChanged: (index) {
-          //TODO
-          //   _seletedItem = index;
-        },
-        controller: _pageController,
-        children: _pages,
+        physics: const NeverScrollableScrollPhysics(),
+        controller: pageController,
+        children: pageViewNavigationController.pages,
       ),
       bottomNavigationBar: Container(
         margin: const EdgeInsets.symmetric(horizontal: 90),
@@ -32,6 +29,7 @@ class MenuScreen extends StatelessWidget {
             topLeft: Radius.circular(20),
             topRight: Radius.circular(20),
           ),
+          gradient: LinearGradient(colors: [Colors.purpleAccent, Colors.blue]),
         ),
         child: Material(
           color: Colors.transparent,
@@ -39,34 +37,16 @@ class MenuScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               IconButton(
-                splashColor: Colors.red,
                 splashRadius: 22,
-                icon: Icon(Icons.home),
-                onPressed: () {
-                  //TODO
-                  // setState(() {
-                  //   _seletedItem = 0;
-                  //   _pageController.animateToPage(_seletedItem,
-                  //       duration: const Duration(seconds: 1),
-                  //       curve: Curves.fastOutSlowIn);
-                  //   print(_seletedItem.toString());
-                  // });
-                },
+                icon: const Icon(Icons.home),
+                onPressed: () async => await pageViewNavigationController
+                    .navigateTo(0, pageController),
               ),
               IconButton(
-                icon: const Icon(Icons.mail),
-                splashColor: Colors.yellow,
+                icon: const Icon(Icons.person),
                 splashRadius: 22,
-                onPressed: () {
-                  //TODO
-                  // setState(() {
-                  //   _seletedItem = 1;
-                  //   _pageController.animateToPage(_seletedItem,
-                  //       duration: const Duration(seconds: 1),
-                  //       curve: Curves.fastOutSlowIn);
-                  //   print(_seletedItem.toString());
-                  // });
-                },
+                onPressed: () async => await pageViewNavigationController
+                    .navigateTo(1, pageController),
               )
             ],
           ),

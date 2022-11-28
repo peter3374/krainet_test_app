@@ -23,7 +23,7 @@ Map<String, Widget Function(BuildContext)> routes = {
   Pages.signUp.type: (_) => const SignUpScreen(),
   Pages.signIn.type: (_) => const SignInScreen(),
 
-  Pages.menu.type: (_) => MenuScreen(),
+  Pages.menu.type: (_) => PageViewNavigation(),
 };
 
 class NavigationService {
