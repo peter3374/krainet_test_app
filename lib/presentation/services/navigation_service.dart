@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:krainet_test_app/presentation/screens/initial_screen/initial_screen.dart';
-import 'package:krainet_test_app/presentation/screens/menu_screens/page_view_navigation.dart';
+import 'package:krainet_test_app/presentation/screens/menu_screens/page_view_navigation/page_view_navigation.dart';
 import 'package:krainet_test_app/presentation/screens/auth_screens/sign_up_screen/sign_up_screen.dart';
 import 'package:krainet_test_app/presentation/screens/auth_screens/sign_in_screen/sing_in_screen.dart';
 

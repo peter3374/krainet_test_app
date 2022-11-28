@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:krainet_test_app/presentation/screens/menu_screens/page_view_navigation/page_view_navigation_controller.dart';
+import 'package:krainet_test_app/presentation/screens/menu_screens/page_view_navigation/controller/page_view_navigation_controller.dart';
 import 'package:provider/provider.dart';
 
 class PageViewNavigation extends StatefulWidget {
@@ -11,6 +11,13 @@ class PageViewNavigation extends StatefulWidget {
 
 class _PageViewNavigationState extends State<PageViewNavigation> {
   final pageController = PageController();
+
+  @override
+  void dispose() {
+    pageController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final pageViewNavigationController =

@@ -9,7 +9,6 @@ class PageViewNavigationController extends ChangeNotifier {
     const KeepAlivePageWidget(child: ProfileScreen()),
   ];
 
-
   Future<void> navigateTo(int value, PageController pageController) async {
     await pageController.animateToPage(
       value,
