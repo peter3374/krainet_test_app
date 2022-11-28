@@ -1,0 +1,1 @@
+const paddingAll = 12.0;
