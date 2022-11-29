@@ -16,12 +16,11 @@ class MainScreen extends StatelessWidget {
       body: FutureBuilder(
         future: mainScreenController.getImagesUrls(),
         builder: (context, AsyncSnapshot<List<String>> snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const CircularProgressIndicator();
-          }
-          if (snapshot.hasError) {
-            return const CircularProgressIndicator();
-          } else {
+          if (!snapshot.hasData) {
+            return const Center(
+              child: Text('Нет изображений'),
+            );
+          } else if (snapshot.hasData) {
             final urls = snapshot.data;
             return ListView.builder(
               itemCount: urls?.length ?? 0,
@@ -32,6 +31,8 @@ class MainScreen extends StatelessWidget {
                 ),
               ),
             );
+          } else {
+            return const CircularProgressIndicator();
           }
         },
       ),
