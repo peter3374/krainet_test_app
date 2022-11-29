@@ -13,8 +13,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SignUpController extends AuthController with ChangeNotifier {
-  final formKey = GlobalKey<FormState>();
-
   DateTime? pickedDate;
   bool isActiveSignUpButton = true;
   bool isPassword1FieldObscure = true;
@@ -167,7 +165,6 @@ class SignUpController extends AuthController with ChangeNotifier {
         await _saveUserCredentials(user.user!);
       }
     } catch (e) {
-      log(e.toString());
       throw MessageService.displaySnackbar(
         context: context,
         message: 'Ошибка регистрации',
@@ -175,24 +172,22 @@ class SignUpController extends AuthController with ChangeNotifier {
     }
   }
 
-  bool isValidForm({
+  bool _isValidForm({
     required String email,
     required String password1,
     required String password2,
     required BuildContext context,
   }) {
-    if (_isValidPassword(
-          password1: password1,
-          password2: password2,
-          context: context,
-        ) &&
-        _isPrivacyPolicyChecked(context) &&
-        _isBirhdayDatePicked(context) &&
-        formKey.currentState!.validate()) {
-      return true;
-    } else {
-      return false;
-    }
+    return _isValidPassword(
+              password1: password1,
+              password2: password2,
+              context: context,
+            ) &&
+            _isPrivacyPolicyChecked(context) &&
+            _isBirhdayDatePicked(context) &&
+            formKey.currentState!.validate()
+        ? true
+        : false;
   }
 
   Future<void> trySignUp({
@@ -204,7 +199,7 @@ class SignUpController extends AuthController with ChangeNotifier {
     try {
       isActiveSignUpButton = false;
       notifyListeners();
-      if (isValidForm(
+      if (_isValidForm(
         email: email,
         password1: password1,
         password2: password2,

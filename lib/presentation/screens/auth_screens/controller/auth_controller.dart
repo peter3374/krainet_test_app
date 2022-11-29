@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:krainet_test_app/domain/repository/auth_repository.dart';
 import 'package:krainet_test_app/presentation/screens/auth_screens/validator/form_validator.dart';
 
@@ -8,4 +9,6 @@ abstract class AuthController {
     required this.formValidator,
     required this.authRepository,
   });
+
+  final formKey = GlobalKey<FormState>();
 }
