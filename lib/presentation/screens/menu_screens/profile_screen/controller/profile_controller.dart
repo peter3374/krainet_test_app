@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:krainet_test_app/core/user_credentials_scheme.dart';
 import 'package:krainet_test_app/domain/repository/auth_repository.dart';
 import 'package:krainet_test_app/presentation/services/navigation_service.dart';
@@ -23,11 +23,32 @@ class ProfileController extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> signOut(BuildContext context) async =>
+  Future<void> _signOut(BuildContext context) async =>
       _authRepository.signOut().then(
             (value) => NavigationService.navigateTo(
               context,
               Pages.signUpReplacement,
             ),
           );
+
+  Future<void> showSignOutConfirmDialog(BuildContext context) => showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Выйти?"),
+          content: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              TextButton(
+                onPressed: () async => _signOut(context),
+                child: const Text("Да"),
+              ),
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text("Нет"),
+              ),
+            ],
+          ),
+        );
+      });
 }

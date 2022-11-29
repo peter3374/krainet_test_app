@@ -1,8 +1,7 @@
 import 'dart:io';
-
 import 'package:firebase_storage/firebase_storage.dart';
 
-abstract class UserDataSource {
+abstract class UserRepository {
   Future<String?> uploadAvatarToStorage({
     required String name,
     required File file,

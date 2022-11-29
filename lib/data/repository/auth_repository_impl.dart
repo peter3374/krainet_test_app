@@ -1,5 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:krainet_test_app/data/datasource/remote/auth_datasource.dart';
+import 'package:krainet_test_app/data/datasource/remote/auth_data_source.dart';
 import 'package:krainet_test_app/domain/repository/auth_repository.dart';
 
 class AuthRepositoryImpl implements AuthRepository {

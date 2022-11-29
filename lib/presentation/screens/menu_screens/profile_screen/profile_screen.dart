@@ -11,15 +11,24 @@ class ProfileScreen extends StatelessWidget {
     profileController.fetchLocalData();
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: () async => profileController.signOut(context),
+        onPressed: () async =>
+            profileController.showSignOutConfirmDialog(context),
         child: const Icon(Icons.power_settings_new),
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Text('Ваша дата: ${profileController.birthdayDate}'),
-          Text('Ваша почта: ${profileController.email}'),
-        ],
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'Почта: ${profileController.email}',
+              style: const TextStyle(fontSize: 25),
+            ),
+            Text(
+              'Дата: ${profileController.birthdayDate}',
+              style: const TextStyle(fontSize: 25),
+            ),
+          ],
+        ),
       ),
     );
   }

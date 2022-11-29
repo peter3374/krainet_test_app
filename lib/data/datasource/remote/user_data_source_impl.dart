@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
@@ -9,16 +10,41 @@ class UserDataSourceImpl implements UserDataSource {
   UserDataSourceImpl({required FirebaseStorage firebaseStorage})
       : _firebaseStorage = firebaseStorage;
 
+  final _imageFolder = 'images/';
+
   @override
-  Future<String?> uploadAvatar({
+  Future<String?> uploadAvatarToStorage({
     required String name,
     required File file,
   }) async {
-    final ref = _firebaseStorage.ref().child(file.path);
-    final responce = kIsWeb
-        ? ref.putData(await file.readAsBytes())
-        : ref.putFile(File(file.path));
-    final url = await responce.snapshot.ref.getDownloadURL();
-    return url;
+    try {
+      final ref = _firebaseStorage.ref('$_imageFolder$name');
+      final responce = kIsWeb
+          ? ref.putData(await file.readAsBytes())
+          : ref.putFile(File(file.path));
+      final url = await responce.snapshot.ref.getDownloadURL();
+      return url;
+    } on FirebaseException catch (e) {
+      log('e $e');
+      throw '';
+    }
+  }
+
+  @override
+  Future<List<Reference>> fetchImagesFromStorage() async {
+    final results = await _firebaseStorage.ref(_imageFolder).listAll();
+    return results.items;
+  }
+
+  @override
+  Future<List<String>> getImagesUrls(List<Reference> items) async {
+    final urlList = <String>[];
+    if (items.isNotEmpty) {
+      for (var i = 0; i < items.length; i++) {
+        urlList.add(await items[i].getDownloadURL());
+      }
+      return urlList;
+    }
+    return [];
   }
 }

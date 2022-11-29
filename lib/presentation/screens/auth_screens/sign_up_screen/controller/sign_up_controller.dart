@@ -95,22 +95,14 @@ class SignUpController with ChangeNotifier {
     required String password2,
     required BuildContext context,
   }) {
-    if (password1.length < 6 || password2.length < 6) {
+    if (password1 == password2) {
+      return true;
+    } else {
       MessageService.displaySnackbar(
         context: context,
-        message: 'Пароль должен быть >= 6 символов ',
+        message: 'Пароли не совпадают',
       );
       return false;
-    } else {
-      if (password1 == password2) {
-        return true;
-      } else {
-        MessageService.displaySnackbar(
-          context: context,
-          message: 'Пароли не совпадают',
-        );
-        return false;
-      }
     }
   }
 

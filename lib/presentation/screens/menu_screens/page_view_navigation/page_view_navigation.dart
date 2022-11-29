@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:krainet_test_app/presentation/screens/menu_screens/page_view_navigation/controller/page_view_navigation_controller.dart';
-import 'package:provider/provider.dart';
 
 class PageViewNavigation extends StatefulWidget {
   const PageViewNavigation({super.key});
@@ -34,7 +33,7 @@ class _PageViewNavigationState extends State<PageViewNavigation> {
             topLeft: Radius.circular(20),
             topRight: Radius.circular(20),
           ),
-          gradient: LinearGradient(colors: [Colors.purpleAccent, Colors.blue]),
+          color: Colors.black,
         ),
         child: Material(
           color: Colors.transparent,
@@ -43,12 +42,18 @@ class _PageViewNavigationState extends State<PageViewNavigation> {
             children: [
               IconButton(
                 splashRadius: 22,
-                icon: const Icon(Icons.home),
+                icon: const Icon(
+                  Icons.home,
+                  color: Colors.white,
+                ),
                 onPressed: () async => await pageViewNavigationController
                     .navigateTo(0, pageController),
               ),
               IconButton(
-                icon: const Icon(Icons.person),
+                icon: const Icon(
+                  Icons.person,
+                  color: Colors.white,
+                ),
                 splashRadius: 22,
                 onPressed: () async => await pageViewNavigationController
                     .navigateTo(1, pageController),

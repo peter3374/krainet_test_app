@@ -1,12 +1,17 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:krainet_test_app/core/file_picker_provider.dart';
 import 'package:krainet_test_app/data/datasource/remote/auth_data_source_impl.dart';
+import 'package:krainet_test_app/data/datasource/remote/user_data_source_impl.dart';
 import 'package:krainet_test_app/data/repository/auth_repository_impl.dart';
+import 'package:krainet_test_app/data/repository/user_repository_impl.dart';
 import 'package:krainet_test_app/presentation/screens/auth_screens/sign_in_screen/controller/sign_in_controller.dart';
 import 'package:krainet_test_app/presentation/screens/auth_screens/sign_up_screen/controller/sign_up_controller.dart';
 import 'package:krainet_test_app/presentation/screens/initial_screen/controller/initial_screen_controller.dart';
+import 'package:krainet_test_app/presentation/screens/menu_screens/main_screen/controller/main_screen_controller.dart';
 import 'package:krainet_test_app/presentation/screens/menu_screens/profile_screen/controller/profile_controller.dart';
 import 'package:krainet_test_app/presentation/services/injection.dart';
 import 'package:krainet_test_app/presentation/services/navigation_service.dart';
@@ -66,6 +71,17 @@ class _MyAppState extends State<MyApp> {
             authRepository: AuthRepositoryImpl(
               authDataSource: AuthDataSourceImpl(
                 firebaseAuth: FirebaseAuth.instance,
+              ),
+            ),
+          ),
+        ),
+        //
+        ChangeNotifierProvider(
+          create: (context) => MainScreenController(
+            filePickerProvider: FilePickerProvider(),
+            userRepository: UserRepositoryImpl(
+              userDataSource: UserDataSourceImpl(
+                firebaseStorage: FirebaseStorage.instance,
               ),
             ),
           ),

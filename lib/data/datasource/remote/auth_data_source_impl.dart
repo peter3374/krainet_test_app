@@ -1,5 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:krainet_test_app/data/datasource/remote/auth_datasource.dart';
+import 'package:krainet_test_app/data/datasource/remote/auth_data_source.dart';
 
 class AuthDataSourceImpl implements AuthDataSource {
   final FirebaseAuth _firebaseAuth;

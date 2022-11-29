@@ -38,12 +38,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
         title: const Text('Регистрация'),
       ),
       body: SingleChildScrollView(
-        child: UnfocusWidget(
-          child: Form(
-            key: signUpController.formKey,
-            autovalidateMode: AutovalidateMode.onUserInteraction,
-            child: Padding(
-              padding: const EdgeInsets.all(paddingAll),
+        child: Form(
+          key: signUpController.formKey,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
+          child: Padding(
+            padding: const EdgeInsets.all(paddingAll),
+            child: UnfocusWidget(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
