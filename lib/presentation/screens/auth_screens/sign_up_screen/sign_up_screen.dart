@@ -47,7 +47,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const FlutterLogo(size: 90),
                   TextFieldWrapper(
                     child: TextFormField(
                       controller: _emailTextController,

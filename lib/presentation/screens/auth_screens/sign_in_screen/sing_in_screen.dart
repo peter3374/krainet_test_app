@@ -44,6 +44,7 @@ class _SignInScreenState extends State<SignInScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  const FlutterLogo(size: 90),
                   TextFieldWrapper(
                     child: TextFormField(
                       validator: (value) => signInController.formValidator
