@@ -122,6 +122,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ],
                   ),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Checkbox(
                         value: signUpController.isPrivacyPolicyAgree,

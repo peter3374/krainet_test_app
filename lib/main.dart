@@ -12,6 +12,7 @@ import 'package:krainet_test_app/presentation/services/injection.dart';
 import 'package:krainet_test_app/presentation/services/navigation_service.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
+import 'presentation/screens/auth_screens/validator/form_validator.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -43,10 +44,22 @@ class _MyAppState extends State<MyApp> {
           ),
         ),
         ChangeNotifierProvider(
-          create: (context) => SignUpController(),
+          create: (context) => SignUpController(
+            formValidator: FormValidator(),
+            authRepository: AuthRepositoryImpl(
+              authDataSource:
+                  AuthDataSourceImpl(firebaseAuth: FirebaseAuth.instance),
+            ),
+          ),
         ),
         ChangeNotifierProvider(
-          create: (context) => SignInController(),
+          create: (context) => SignInController(
+            formValidator: FormValidator(),
+            authRepository: AuthRepositoryImpl(
+              authDataSource:
+                  AuthDataSourceImpl(firebaseAuth: FirebaseAuth.instance),
+            ),
+          ),
         ),
         ChangeNotifierProvider(
           create: (context) => ProfileController(

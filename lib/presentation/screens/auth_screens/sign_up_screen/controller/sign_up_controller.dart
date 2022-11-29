@@ -3,16 +3,16 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:krainet_test_app/core/user_credentials_scheme.dart';
-import 'package:krainet_test_app/data/datasource/remote/auth_data_source_impl.dart';
-import 'package:krainet_test_app/data/repository/auth_repository_impl.dart';
-import 'package:krainet_test_app/presentation/screens/auth_screens/controller/auth_controller.dart';
+import 'package:krainet_test_app/domain/repository/auth_repository.dart';
 import 'package:krainet_test_app/presentation/screens/auth_screens/validator/form_validator.dart';
 import 'package:krainet_test_app/presentation/services/message_service.dart';
 import 'package:krainet_test_app/presentation/services/navigation_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class SignUpController extends AuthController with ChangeNotifier {
+class SignUpController with ChangeNotifier {
+  final formKey = GlobalKey<FormState>();
+
   DateTime? pickedDate;
   bool isActiveSignUpButton = true;
   bool isPassword1FieldObscure = true;
@@ -23,14 +23,13 @@ class SignUpController extends AuthController with ChangeNotifier {
   bool isFilledPassword1 = false;
   bool isFilledPassword2 = false;
 
-  SignUpController()
-      : super(
-          formValidator: FormValidator(),
-          authRepository: AuthRepositoryImpl(
-            authDataSource:
-                AuthDataSourceImpl(firebaseAuth: FirebaseAuth.instance),
-          ),
-        );
+  final FormValidator formValidator;
+  final AuthRepository _authRepository;
+
+  SignUpController({
+    required AuthRepository authRepository,
+    required this.formValidator,
+  }) : _authRepository = authRepository;
 
   void changeIsFilledValue({
     required String text,
@@ -157,7 +156,7 @@ class SignUpController extends AuthController with ChangeNotifier {
     required BuildContext context,
   }) async {
     try {
-      final user = await authRepository.signUp(
+      final user = await _authRepository.signUp(
         email: email,
         password: password,
       );

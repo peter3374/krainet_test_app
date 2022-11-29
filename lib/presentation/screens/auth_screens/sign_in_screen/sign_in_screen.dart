@@ -47,6 +47,10 @@ class _SignInScreenState extends State<SignInScreen> {
                   const FlutterLogo(size: 90),
                   TextFieldWrapper(
                     child: TextFormField(
+                      onChanged: (text) => signInController.changeIsFilledValue(
+                        isFilledValue: signInController.isFilledEmail,
+                        text: text,
+                      ),
                       validator: (value) => signInController.formValidator
                           .validateEmail(email: value ?? ''),
                       controller: _emailTextController,
@@ -61,6 +65,12 @@ class _SignInScreenState extends State<SignInScreen> {
                           TextFieldWrapper(
                             width: 250,
                             child: TextFormField(
+                              onChanged: (text) =>
+                                  signInController.changeIsFilledValue(
+                                isFilledValue:
+                                    signInController.isFilledPassword,
+                                text: text,
+                              ),
                               obscureText:
                                   signInController.isPasswordFieldObscure,
                               validator: (value) => signInController
@@ -85,11 +95,16 @@ class _SignInScreenState extends State<SignInScreen> {
                     ],
                   ),
                   ElevatedButton(
-                    onPressed: () async => await signInController.trySignIn(
+                    onPressed: signInController.isFilledAllTextFields(
                       email: _emailTextController.text,
                       password: _passwordTextController.text,
-                      context: context,
-                    ),
+                    )
+                        ? () async => await signInController.trySignIn(
+                              email: _emailTextController.text,
+                              password: _passwordTextController.text,
+                              context: context,
+                            )
+                        : null,
                     child: const Text('Войти'),
                   ),
                   ElevatedButton(
