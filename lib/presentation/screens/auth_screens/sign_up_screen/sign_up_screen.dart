@@ -15,6 +15,7 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
+  final _formKey = GlobalKey<FormState>();
   final _emailTextController = TextEditingController();
   final _password1TextController = TextEditingController();
   final _password2TextController = TextEditingController();
@@ -39,7 +40,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       ),
       body: SingleChildScrollView(
         child: Form(
-          key: signUpController.formKey,
+          key: _formKey,
           autovalidateMode: AutovalidateMode.onUserInteraction,
           child: Padding(
             padding: const EdgeInsets.all(paddingAll),
@@ -159,6 +160,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     )
                         ? signUpController.isActiveSignUpButton
                             ? () async => await signUpController.trySignUp(
+                                  formKey: _formKey,
                                   context: context,
                                   email: _emailTextController.text,
                                   password1: _password1TextController.text,

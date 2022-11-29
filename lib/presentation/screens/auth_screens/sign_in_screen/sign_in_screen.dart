@@ -16,6 +16,7 @@ class SignInScreen extends StatefulWidget {
 class _SignInScreenState extends State<SignInScreen> {
   final _emailTextController = TextEditingController();
   final _passwordTextController = TextEditingController();
+  final formKey = GlobalKey<FormState>();
 
   @override
   void dispose() {
@@ -38,7 +39,7 @@ class _SignInScreenState extends State<SignInScreen> {
         child: Padding(
           padding: const EdgeInsets.all(paddingAll),
           child: Form(
-            key: signInController.formKey,
+            key: formKey,
             autovalidateMode: AutovalidateMode.onUserInteraction,
             child: UnfocusWidget(
               child: Column(
@@ -100,6 +101,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       password: _passwordTextController.text,
                     )
                         ? () async => await signInController.trySignIn(
+                              formKey: formKey,
                               email: _emailTextController.text,
                               password: _passwordTextController.text,
                               context: context,

@@ -8,7 +8,6 @@ import 'package:krainet_test_app/presentation/services/navigation_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SignInController with ChangeNotifier {
-  final formKey = GlobalKey<FormState>();
   final FormValidator formValidator;
   final AuthRepository _authRepository;
   SignInController({
@@ -64,7 +63,8 @@ class SignInController with ChangeNotifier {
     }
   }
 
-  bool _isValidForm() => formKey.currentState!.validate() ? true : false;
+  bool _isValidForm(GlobalKey<FormState> formKey) =>
+      formKey.currentState!.validate() ? true : false;
 
   void changeIsFilledValue({
     required String text,
@@ -78,11 +78,12 @@ class SignInController with ChangeNotifier {
     required String email,
     required String password,
     required BuildContext context,
+    required GlobalKey<FormState> formKey,
   }) async {
     try {
       isActiveSignInButton = false;
       notifyListeners();
-      if (_isValidForm()) {
+      if (_isValidForm(formKey)) {
         await _signIn(
           email: email,
           password: password,

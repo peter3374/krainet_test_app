@@ -11,8 +11,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SignUpController with ChangeNotifier {
-  final formKey = GlobalKey<FormState>();
-
   DateTime? pickedDate;
   bool isActiveSignUpButton = true;
   bool isPassword1FieldObscure = true;
@@ -168,6 +166,7 @@ class SignUpController with ChangeNotifier {
     required String password1,
     required String password2,
     required BuildContext context,
+    required GlobalKey<FormState> formKey,
   }) {
     return _isValidPassword(
               password1: password1,
@@ -186,6 +185,7 @@ class SignUpController with ChangeNotifier {
     required String password1,
     required String password2,
     required BuildContext context,
+    required GlobalKey<FormState> formKey,
   }) async {
     try {
       isActiveSignUpButton = false;
@@ -195,6 +195,7 @@ class SignUpController with ChangeNotifier {
         password1: password1,
         password2: password2,
         context: context,
+        formKey: formKey,
       )) {
         log('is Valid');
 
