@@ -11,13 +11,16 @@ import 'package:krainet_test_app/presentation/screens/menu_screens/profile_scree
 import 'package:krainet_test_app/presentation/services/injection.dart';
 import 'package:krainet_test_app/presentation/services/navigation_service.dart';
 import 'package:provider/provider.dart';
+import 'firebase_options.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(statusBarColor: Colors.black));
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   setupDependencies();
   runApp(const MyApp());
 }
