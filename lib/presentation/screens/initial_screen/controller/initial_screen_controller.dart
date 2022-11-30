@@ -8,18 +8,17 @@ class InitialScreenController {
       : _firebaseAuth = firebaseAuth;
 
   Future<void> isFirstVisit(BuildContext context) async {
-    _firebaseAuth.authStateChanges().listen((user) {
-      if (user == null) {
-        Future.delayed(
-          const Duration(seconds: 0),
-          () => NavigationService.navigateTo(context, Pages.signUp),
-        );
-      } else {
-        Future.delayed(
-          const Duration(seconds: 0),
-          () => NavigationService.navigateTo(context, Pages.menu),
-        );
-      }
-    });
+    final currentUser = _firebaseAuth.currentUser;
+    if (currentUser == null) {
+      Future.delayed(
+        const Duration(seconds: 0),
+        () => NavigationService.navigateTo(context, Pages.signUp),
+      );
+    } else {
+      Future.delayed(
+        const Duration(seconds: 0),
+        () => NavigationService.navigateTo(context, Pages.menu),
+      );
+    }
   }
 }
