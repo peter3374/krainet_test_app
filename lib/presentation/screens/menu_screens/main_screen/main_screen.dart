@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:krainet_test_app/presentation/screens/menu_screens/main_screen/controller/main_screen_controller.dart';
 import 'package:provider/provider.dart';
@@ -16,7 +18,7 @@ class MainScreen extends StatelessWidget {
       body: FutureBuilder(
         future: mainScreenController.getImagesUrls(),
         builder: (context, AsyncSnapshot<List<String>> snapshot) {
-          if (!snapshot.hasData) {
+          if (snapshot.data?.isEmpty ?? true) {
             return const Center(
               child: Text('Нет изображений'),
             );

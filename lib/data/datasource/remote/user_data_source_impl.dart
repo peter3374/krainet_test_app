@@ -22,10 +22,11 @@ class UserDataSourceImpl implements UserDataSource {
       final responce = kIsWeb
           ? ref.putData(await file.readAsBytes())
           : ref.putFile(File(file.path));
+      log('responce ${responce}');
       final url = await responce.snapshot.ref.getDownloadURL();
       return url;
     } on FirebaseException catch (e) {
-      log('e $e');
+      log('datasource $e');
       throw '';
     }
   }
