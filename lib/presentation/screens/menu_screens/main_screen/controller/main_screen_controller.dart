@@ -1,11 +1,8 @@
-import 'dart:developer';
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:krainet_test_app/core/file_picker_provider.dart';
 import 'package:krainet_test_app/domain/repository/user_repository.dart';
-import 'package:krainet_test_app/presentation/services/message_service.dart';
 
 class MainScreenController extends ChangeNotifier {
   final UserRepository _userRepository;

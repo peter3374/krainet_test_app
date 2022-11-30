@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
@@ -43,10 +42,6 @@ class UserDataSourceImpl implements UserDataSource {
 
   @override
   Future<void> deleteFile(String url) async {
-    try {
       await _firebaseStorage.refFromURL(url).delete();
-    } catch (e) {
-      log('e $e');
-    }
   }
 }
