@@ -7,6 +7,8 @@ const _png = 'png';
 const _jpg = 'jpg';
 
 class FilePickerProvider {
+  // TODO add web picker!
+  // Uint8List uploadfile = result.files.single.bytes;
   Future<PlatformFile> pickFile({required BuildContext context}) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       allowCompression: true,
@@ -20,6 +22,14 @@ class FilePickerProvider {
 
     if (result != null) {
       PlatformFile file = result.files.first;
+
+      // TODO add for web 
+  //     Uint8List fileBytes = result.files.first.bytes;
+  // String fileName = result.files.first.name;
+  
+  // // Upload file
+  // await FirebaseStorage.instance.ref('uploads/$fileName').putData(fileBytes);
+
       return file;
     } else {
       throw MessageService.displaySnackbar(

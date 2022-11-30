@@ -48,6 +48,7 @@ class _MyAppState extends State<MyApp> {
         title: 'Krainet test app',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
+          visualDensity: VisualDensity.adaptivePlatformDensity,
           primarySwatch: Colors.deepPurple,
         ),
       ),
