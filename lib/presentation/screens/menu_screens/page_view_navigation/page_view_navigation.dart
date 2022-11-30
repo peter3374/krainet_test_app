@@ -1,5 +1,8 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:krainet_test_app/presentation/screens/menu_screens/page_view_navigation/controller/page_view_navigation_controller.dart';
+import 'package:krainet_test_app/presentation/screens/menu_screens/page_view_navigation/widgets/navigation_bar_widget.dart';
+import 'package:krainet_test_app/presentation/screens/menu_screens/page_view_navigation/widgets/web_navigation_bar_widget.dart';
 
 class PageViewNavigation extends StatefulWidget {
   const PageViewNavigation({super.key});
@@ -21,47 +24,23 @@ class _PageViewNavigationState extends State<PageViewNavigation> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
+      appBar: kIsWeb
+          ? WebNavigationBar(
+              pageController: pageController,
+              pageViewNavigationController: pageViewNavigationController,
+            )
+          : null,
       body: PageView(
         physics: const NeverScrollableScrollPhysics(),
         controller: pageController,
         children: pageViewNavigationController.pages,
       ),
-      bottomNavigationBar: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 90),
-        decoration: const BoxDecoration(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(20),
-            topRight: Radius.circular(20),
-          ),
-          color: Colors.black,
-        ),
-        child: Material(
-          color: Colors.transparent,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              IconButton(
-                splashRadius: 22,
-                icon: const Icon(
-                  Icons.home,
-                  color: Colors.white,
-                ),
-                onPressed: () async => await pageViewNavigationController
-                    .navigateTo(0, pageController),
-              ),
-              IconButton(
-                icon: const Icon(
-                  Icons.person,
-                  color: Colors.white,
-                ),
-                splashRadius: 22,
-                onPressed: () async => await pageViewNavigationController
-                    .navigateTo(1, pageController),
-              )
-            ],
-          ),
-        ),
-      ),
+      bottomNavigationBar: kIsWeb
+          ? null
+          : NavigationBarWidget(
+              pageController: pageController,
+              pageViewNavigationController: pageViewNavigationController,
+            ),
     );
   }
 }
