@@ -24,4 +24,9 @@ class UserRepositoryImpl implements UserRepository {
         file: file,
         fileName: name,
       );
+
+  @override
+  Future<void> deleteFile(String url) async {
+    await _userDataSource.deleteFile(url);
+  }
 }

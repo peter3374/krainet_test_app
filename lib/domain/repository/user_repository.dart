@@ -10,4 +10,6 @@ abstract class UserRepository {
   Future<List<Reference>> fetchImagesFromStorage();
 
   Future<List<String>> getImagesUrls(List<Reference> items);
+
+    Future<void> deleteFile(String url);
 }

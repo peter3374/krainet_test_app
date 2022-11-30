@@ -24,7 +24,7 @@ class FilePickerProvider {
     } else {
       throw MessageService.displaySnackbar(
         context: context,
-        message: 'Выбери картинку',
+        message: 'Изображение не выбрано',
       );
     }
   }

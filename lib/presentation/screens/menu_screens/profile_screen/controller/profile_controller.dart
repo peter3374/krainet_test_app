@@ -31,7 +31,7 @@ class ProfileController extends ChangeNotifier {
             ),
           );
 
-  Future<void> showSignOutConfirmDialog(BuildContext context) => showDialog(
+  Future<void> showSignOutConfirmDialog(BuildContext context)async => await showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(

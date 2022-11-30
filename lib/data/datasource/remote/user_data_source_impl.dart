@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
@@ -16,10 +17,10 @@ class UserDataSourceImpl implements UserDataSource {
     required String fileName,
     required File file,
   }) async {
-      final ref = _firebaseStorage.ref('$_imageFolder$fileName');
-      kIsWeb
-          ? ref.putData(await file.readAsBytes())
-          : ref.putFile(File(file.path));
+    final ref = _firebaseStorage.ref('$_imageFolder$fileName');
+    kIsWeb
+        ? await ref.putData(await file.readAsBytes())
+        : await ref.putFile(File(file.path));
   }
 
   @override
@@ -38,5 +39,14 @@ class UserDataSourceImpl implements UserDataSource {
       return urlList;
     }
     return [];
+  }
+
+  @override
+  Future<void> deleteFile(String url) async {
+    try {
+      await _firebaseStorage.refFromURL(url).delete();
+    } catch (e) {
+      log('e $e');
+    }
   }
 }
