@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
@@ -22,13 +21,9 @@ class MainScreenController extends ChangeNotifier {
       isAddImageButtonActive = false;
       notifyListeners();
       final pickedImage = await pickImage(context);
-      final url = await _userRepository.uploadAvatarToStorage(
+      await _userRepository.uploadAvatarToStorage(
           name: pickedImage.name, file: File(pickedImage.path ?? ''));
-      log('url $url');
-    } catch (e, t) {
-      // TODO fix it
-      log('e $e');
-      log('trace $t');
+    } catch (e) {
       MessageService.displaySnackbar(
         context: context,
         message: 'Ошибка загрузки',

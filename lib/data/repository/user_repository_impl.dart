@@ -16,12 +16,12 @@ class UserRepositoryImpl implements UserRepository {
       await _userDataSource.getImagesUrls(items);
 
   @override
-  Future<String?> uploadAvatarToStorage({
+  Future<void> uploadAvatarToStorage({
     required String name,
     required File file,
   }) async =>
       await _userDataSource.uploadAvatarToStorage(
         file: file,
-        name: name,
+        fileName: name,
       );
 }

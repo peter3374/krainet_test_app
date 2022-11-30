@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
@@ -13,22 +12,14 @@ class UserDataSourceImpl implements UserDataSource {
   final _imageFolder = 'images/';
 
   @override
-  Future<String?> uploadAvatarToStorage({
-    required String name,
+  Future<void> uploadAvatarToStorage({
+    required String fileName,
     required File file,
   }) async {
-    try {
-      final ref = _firebaseStorage.ref('$_imageFolder$name');
-      final responce = kIsWeb
+      final ref = _firebaseStorage.ref('$_imageFolder$fileName');
+      kIsWeb
           ? ref.putData(await file.readAsBytes())
           : ref.putFile(File(file.path));
-      log('responce ${responce}');
-      final url = await responce.snapshot.ref.getDownloadURL();
-      return url;
-    } on FirebaseException catch (e) {
-      log('datasource $e');
-      throw '';
-    }
   }
 
   @override
