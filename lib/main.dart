@@ -1,13 +1,6 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:krainet_test_app/core/file_picker_provider.dart';
-import 'package:krainet_test_app/data/datasource/remote/auth_data_source_impl.dart';
-import 'package:krainet_test_app/data/datasource/remote/user_data_source_impl.dart';
-import 'package:krainet_test_app/data/repository/auth_repository_impl.dart';
-import 'package:krainet_test_app/data/repository/user_repository_impl.dart';
 import 'package:krainet_test_app/presentation/screens/auth_screens/sign_in_screen/controller/sign_in_controller.dart';
 import 'package:krainet_test_app/presentation/screens/auth_screens/sign_up_screen/controller/sign_up_controller.dart';
 import 'package:krainet_test_app/presentation/screens/initial_screen/controller/initial_screen_controller.dart';
@@ -17,7 +10,6 @@ import 'package:krainet_test_app/presentation/services/injection.dart';
 import 'package:krainet_test_app/presentation/services/navigation_service.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
-import 'presentation/screens/auth_screens/validator/form_validator.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -43,48 +35,12 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        Provider(
-          create: (context) => InitialScreenController(
-            firebaseAuth: FirebaseAuth.instance,
-          ),
-        ),
+        Provider(create: (context) => getIt<InitialScreenController>()),
+        ChangeNotifierProvider(create: (context) => getIt<SignUpController>()),
+        ChangeNotifierProvider(create: (context) => getIt<SignInController>()),
+        ChangeNotifierProvider(create: (context) => getIt<ProfileController>()),
         ChangeNotifierProvider(
-          create: (context) => SignUpController(
-            formValidator: FormValidator(),
-            authRepository: AuthRepositoryImpl(
-              authDataSource:
-                  AuthDataSourceImpl(firebaseAuth: FirebaseAuth.instance),
-            ),
-          ),
-        ),
-        ChangeNotifierProvider(
-          create: (context) => SignInController(
-            formValidator: FormValidator(),
-            authRepository: AuthRepositoryImpl(
-              authDataSource:
-                  AuthDataSourceImpl(firebaseAuth: FirebaseAuth.instance),
-            ),
-          ),
-        ),
-        ChangeNotifierProvider(
-          create: (context) => ProfileController(
-            authRepository: AuthRepositoryImpl(
-              authDataSource: AuthDataSourceImpl(
-                firebaseAuth: FirebaseAuth.instance,
-              ),
-            ),
-          ),
-        ),
-        //
-        ChangeNotifierProvider(
-          create: (context) => MainScreenController(
-            filePickerProvider: FilePickerProvider(),
-            userRepository: UserRepositoryImpl(
-              userDataSource: UserDataSourceImpl(
-                firebaseStorage: FirebaseStorage.instance,
-              ),
-            ),
-          ),
+          create: (context) => getIt<MainScreenController>(),
         ),
       ],
       child: MaterialApp(
