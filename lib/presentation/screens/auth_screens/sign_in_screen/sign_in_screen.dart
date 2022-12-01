@@ -95,26 +95,34 @@ class _SignInScreenState extends State<SignInScreen> {
                       ),
                     ],
                   ),
-                  ElevatedButton(
-                    onPressed: signInController.isFilledAllTextFields(
-                      email: _emailTextController.text,
-                      password: _passwordTextController.text,
-                    )
-                        ? () async => await signInController.trySignIn(
-                              formKey: formKey,
-                              email: _emailTextController.text,
-                              password: _passwordTextController.text,
-                              context: context,
-                            )
-                        : null,
-                    child: const Text('Войти'),
-                  ),
-                  ElevatedButton(
-                    onPressed: () async => await NavigationService.navigateTo(
-                      context,
-                      Pages.signUpReplacement,
-                    ),
-                    child: const Text('Регистрация'),
+                  Wrap(
+                    direction: Axis.vertical,
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    spacing: 8,
+                    children: [
+                      ElevatedButton(
+                        onPressed: signInController.isFilledAllTextFields(
+                          email: _emailTextController.text,
+                          password: _passwordTextController.text,
+                        )
+                            ? () async => await signInController.trySignIn(
+                                  formKey: formKey,
+                                  email: _emailTextController.text,
+                                  password: _passwordTextController.text,
+                                  context: context,
+                                )
+                            : null,
+                        child: const Text('Войти'),
+                      ),
+                      ElevatedButton(
+                        onPressed: () async =>
+                            await NavigationService.navigateTo(
+                          context,
+                          Pages.signUpReplacement,
+                        ),
+                        child: const Text('Регистрация'),
+                      ),
+                    ],
                   ),
                 ],
               ),

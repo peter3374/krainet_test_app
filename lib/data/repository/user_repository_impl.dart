@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:krainet_test_app/data/datasource/remote/user_data_source.dart';
 import 'dart:io';
@@ -28,5 +30,16 @@ class UserRepositoryImpl implements UserRepository {
   @override
   Future<void> deleteFile(String url) async {
     await _userDataSource.deleteFile(url);
+  }
+
+  @override
+  Future<void> uploadAvatarToStorageWeb({
+    required String fileName,
+    required Uint8List bytes,
+  }) async {
+    await _userDataSource.uploadAvatarToStorageWeb(
+      bytes: bytes,
+      fileName: fileName,
+    );
   }
 }

@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:krainet_test_app/core/file_picker_provider.dart';
 import 'package:krainet_test_app/domain/repository/user_repository.dart';
@@ -23,10 +24,19 @@ class MainScreenController extends ChangeNotifier {
       isAddImageButtonActive = false;
       notifyListeners();
       final pickedImage = await pickImage(context);
-      await _userRepository
-          .uploadAvatarToStorage(
-              name: pickedImage.name, file: File(pickedImage.path ?? ''))
-          .then((_) => updateState());
+      kIsWeb
+          ? await _userRepository
+              .uploadAvatarToStorageWeb(
+                fileName: pickedImage.name,
+                bytes: pickedImage.bytes!,
+              )
+              .then((_) => updateState())
+          : await _userRepository
+              .uploadAvatarToStorage(
+                name: pickedImage.name,
+                file: File(pickedImage.path ?? ''),
+              )
+              .then((_) => updateState());
     } finally {
       isAddImageButtonActive = true;
       notifyListeners();

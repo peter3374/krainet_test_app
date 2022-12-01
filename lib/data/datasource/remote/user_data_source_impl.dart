@@ -18,10 +18,16 @@ class UserDataSourceImpl implements UserDataSource {
   }) async {
     final ref = _firebaseStorage.ref('$_imageFolder$fileName');
 
-    kIsWeb
-        ? await ref.putData(await file.readAsBytes(),
-            SettableMetadata(contentType: 'image/${file.path.split('.').last}'))
-        : await ref.putFile(File(file.path));
+    await ref.putFile(File(file.path));
+  }
+
+  @override
+  Future<void> uploadAvatarToStorageWeb({
+    required String fileName,
+    required Uint8List bytes,
+  }) async {
+    final ref = _firebaseStorage.ref('$_imageFolder$fileName');
+    await ref.putData(bytes);
   }
 
   @override

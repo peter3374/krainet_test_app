@@ -142,40 +142,48 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                     ],
                   ),
-                  ElevatedButton(
-                    onPressed: () async =>
-                        await signUpController.pickBirthdayDate(context),
-                    child: Text(
-                      signUpController.pickedDate == null
-                          ? 'Выбрать дату'
-                          : DateFormat('yyyy-MM-dd')
-                              .format(signUpController.pickedDate!),
-                    ),
-                  ),
-                  ElevatedButton(
-                    onPressed: signUpController.isFilledAllTextFields(
-                      email: _emailTextController.text,
-                      password1: _password1TextController.text,
-                      password2: _password2TextController.text,
-                    )
-                        ? signUpController.isActiveSignUpButton
-                            ? () async => await signUpController.trySignUp(
-                                  formKey: _formKey,
-                                  context: context,
-                                  email: _emailTextController.text,
-                                  password1: _password1TextController.text,
-                                  password2: _password2TextController.text,
-                                )
-                            : null
-                        : null,
-                    child: const Text('Регистрация'),
-                  ),
-                  ElevatedButton(
-                    onPressed: () async => await NavigationService.navigateTo(
-                      context,
-                      Pages.signInReplacement,
-                    ),
-                    child: const Text('Вход'),
+                  Wrap(
+                    direction: Axis.vertical,
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    spacing: 8,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () async =>
+                            await signUpController.pickBirthdayDate(context),
+                        child: Text(
+                          signUpController.pickedDate == null
+                              ? 'Выбрать дату'
+                              : DateFormat('yyyy-MM-dd')
+                                  .format(signUpController.pickedDate!),
+                        ),
+                      ),
+                      ElevatedButton(
+                        onPressed: signUpController.isFilledAllTextFields(
+                          email: _emailTextController.text,
+                          password1: _password1TextController.text,
+                          password2: _password2TextController.text,
+                        )
+                            ? signUpController.isActiveSignUpButton
+                                ? () async => await signUpController.trySignUp(
+                                      formKey: _formKey,
+                                      context: context,
+                                      email: _emailTextController.text,
+                                      password1: _password1TextController.text,
+                                      password2: _password2TextController.text,
+                                    )
+                                : null
+                            : null,
+                        child: const Text('Регистрация'),
+                      ),
+                      ElevatedButton(
+                        onPressed: () async =>
+                            await NavigationService.navigateTo(
+                          context,
+                          Pages.signInReplacement,
+                        ),
+                        child: const Text('Вход'),
+                      ),
+                    ],
                   ),
                 ],
               ),

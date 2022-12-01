@@ -22,14 +22,6 @@ class FilePickerProvider {
 
     if (result != null) {
       PlatformFile file = result.files.first;
-
-      // TODO add for web 
-  //     Uint8List fileBytes = result.files.first.bytes;
-  // String fileName = result.files.first.name;
-  
-  // // Upload file
-  // await FirebaseStorage.instance.ref('uploads/$fileName').putData(fileBytes);
-
       return file;
     } else {
       throw MessageService.displaySnackbar(
