@@ -7,8 +7,6 @@ const _png = 'png';
 const _jpg = 'jpg';
 
 class FilePickerProvider {
-  // TODO add web picker!
-  // Uint8List uploadfile = result.files.single.bytes;
   Future<PlatformFile> pickFile({required BuildContext context}) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       allowCompression: true,
